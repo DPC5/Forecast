@@ -23,20 +23,12 @@ except:
 #location set done
 
 
-def get_alerts():
-    
-    alerts_url = f'https://api.weather.gov/alerts/active/area/{code}'
-    response = urlopen(alerts_url)
-    data = json.load(response)
+def fetch_nws_alerts():
 
-    # Sort through response and list out the location and description of the alert
-
-    return ret
-
-
-
-
-
+    url = "https://api.weather.gov/alerts/active"
+    response = requests.get(url)
+    response.raise_for_status()  
+    return response.json()
 
 
 #TODO
