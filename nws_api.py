@@ -5,20 +5,20 @@ from urllib.request import urlopen
 
 
 #getting location
-ip_url = 'http://ipinfo.io/json'
-response = urlopen(ip_url)
-data = json.load(response)
+# ip_url = 'http://ipinfo.io/json'
+# response = urlopen(ip_url)
+# data = json.load(response)
 
-try:
-    city = data['city']
-    country = data['country']
-    region = data['region']
-    code = f'{region.split(" ")[0][0]+region.split(" ")[1][0]}'
-except:
-    city = "Buffalo" #Setting default location if nothing is found
-    country = "US"
-    region = "New York"
-    code = "NY"
+# try:
+#     city = data['city']
+#     country = data['country']
+#     region = data['region']
+#     code = f'{region.split(" ")[0][0]+region.split(" ")[1][0]}'
+# except:
+#     city = "Buffalo" #Setting default location if nothing is found
+#     country = "US"
+#     region = "New York"
+#     code = "NY"
 
 #location set done
 
@@ -26,6 +26,13 @@ except:
 def fetch_nws_alerts():
 
     url = "https://api.weather.gov/alerts/active"
+    response = requests.get(url)
+    response.raise_for_status()  
+    return response.json()
+
+def fetch_number_of_nws_alerts():
+
+    url = "https://api.weather.gov/alerts/active/count"
     response = requests.get(url)
     response.raise_for_status()  
     return response.json()
@@ -45,6 +52,8 @@ def format_nws_alert(input_data):
         
         if 'sageType' in parsed_data:
             parsed_data['messageType'] = parsed_data.pop('sageType')
+
+    
 
         
         formatted_data = json.dumps(parsed_data, indent=4)
